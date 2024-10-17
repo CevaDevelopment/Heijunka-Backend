@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-dsxlmfn(l!&41lp8k_le@7cxyh*^9z#&rvy!vev#^m()0bir-4
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "172.17.0.1", "localhost", "127.0.0.1"
+    "172.17.0.1", "localhost", "127.0.0.1", 'heijunka-backend.onrender.com',
 ]
 
 AUTH_USER_MODEL = 'heijunka_app.User'
