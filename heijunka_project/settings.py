@@ -9,8 +9,10 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
+import os
 from datetime import timedelta
 from pathlib import Path
+from urllib.parse import urlparse
 
 from corsheaders.defaults import default_headers
 
@@ -121,10 +123,10 @@ WSGI_APPLICATION = 'heijunka_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'heijunka_bd',
-        'USER': 'postgres',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',
+        'NAME': 'heijunka_bd_92vk',
+        'USER': 'heijunka_bd_92vk_user',
+        'PASSWORD': 'dijm6RzZ5O7XPSM8dEftuJ8xVtzOZUc4',
+        'HOST': 'dpg-cs8jj768ii6s73cd2sp0-a.oregon-postgres.render.com',  # Cambia esto por el host de tu base de datos
         'PORT': '5432',
     }
 }
