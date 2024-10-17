@@ -16,10 +16,9 @@ class LoginSerializer(serializers.Serializer):
             return user
         raise serializers.ValidationError("Credenciales incorrectas.")
 
-# serializers.py
 
 class UserSerializer(serializers.ModelSerializer):
-    site_id = serializers.PrimaryKeyRelatedField(queryset=Site.objects.all(), write_only=True)
+    site_id = serializers.PrimaryKeyRelatedField(queryset=Site.objects.all(), allow_null=True, required=False)
     site_name = serializers.CharField(source='site.name', read_only=True, default='No Site Assigned')
 
     class Meta:
@@ -27,6 +26,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'email', 'first_name', 'last_name', 'password', 'role', 'site_id', 'site_name')
         extra_kwargs = {
             'password': {'write_only': True},
+            'role': {'required': False},  # Hacer que el role no sea obligatorio
         }
 
     def create(self, validated_data):
@@ -41,6 +41,7 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+
 
 
 class SiteSerializer(serializers.ModelSerializer):

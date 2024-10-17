@@ -42,7 +42,7 @@ class User(AbstractBaseUser):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     site = models.ForeignKey(Site, on_delete=models.SET_NULL, null=True, blank=True)
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default=EMPLOYEE)
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default=EMPLOYEE, null=True, blank=True)
 
     objects = UserManager()
 
