@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-dsxlmfn(l!&41lp8k_le@7cxyh*^9z#&rvy!vev#^m()0bir-4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     "172.17.0.1", "localhost", "127.0.0.1", 'heijunka-backend.onrender.com',
@@ -80,8 +80,10 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  # Añade aquí el puerto de tu frontend
+    "http://localhost:5173",  # Para desarrollo local
+    "https://tu-frontend-en-render.com",  # URL pública del frontend en Render
 ]
+
 
 # settings.py
 CORS_ALLOW_HEADERS = list(default_headers) + [
