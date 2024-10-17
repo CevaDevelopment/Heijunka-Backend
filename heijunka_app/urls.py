@@ -13,6 +13,8 @@ router.register(r'clients', ClientViewSet)
 router.register(r'schedules', ScheduleViewSet)
 router.register(r'task-assignments', TaskAssignmentViewSet)
 
+
+
 urlpatterns = [
     path('', include(router.urls)),
     path('register/', RegisterView.as_view(), name='register'),

@@ -16,20 +16,27 @@ class LoginSerializer(serializers.Serializer):
             return user
         raise serializers.ValidationError("Credenciales incorrectas.")
 
+# serializers.py
+
 class UserSerializer(serializers.ModelSerializer):
+    site_id = serializers.PrimaryKeyRelatedField(queryset=Site.objects.all(), write_only=True)
+    site_name = serializers.CharField(source='site.name', read_only=True, default='No Site Assigned')
+
     class Meta:
         model = User
-        fields = ('id', 'email', 'first_name', 'last_name', 'password', 'role')
+        fields = ('id', 'email', 'first_name', 'last_name', 'password', 'role', 'site_id', 'site_name')
         extra_kwargs = {
             'password': {'write_only': True},
         }
 
     def create(self, validated_data):
+        site = validated_data.pop('site_id', None)  # Extraer el sitio si está presente
         user = User(
             email=validated_data['email'],
             first_name=validated_data['first_name'],
             last_name=validated_data['last_name'],
-            role=validated_data.get('role', User.EMPLOYEE)  # Rol por defecto es EMPLOYEE
+            role=validated_data.get('role', User.EMPLOYEE),  # Rol por defecto es EMPLOYEE
+            site=site  # Asignar el sitio al usuario
         )
         user.set_password(validated_data['password'])
         user.save()
@@ -79,8 +86,11 @@ class ScheduleSerializer(serializers.ModelSerializer):
         model = Schedule
         fields = '__all__'
 
-
 class TaskAssignmentSerializer(serializers.ModelSerializer):
+    collaborator_name = serializers.CharField(source='collaborator', read_only=True)
+    client_name = serializers.CharField(source='client.name', read_only=True)
+    site_name = serializers.CharField(source='site.name', read_only=True)
+
     class Meta:
         model = TaskAssignment
-        fields = '__all__'
+        fields = ('id', 'hour', 'description', 'quantity', 'collaborator', 'collaborator_name', 'client', 'client_name', 'site', 'site_name')

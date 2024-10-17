@@ -1,7 +1,9 @@
 from django.contrib.auth import authenticate
 from rest_framework import viewsets, generics, status
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAdminUser
+from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import Site, Client, TypeClient, Schedule, User, TaskAssignment
@@ -74,6 +76,13 @@ class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        site_id = self.request.query_params.get('siteId', None)
+        if site_id is not None:
+            queryset = queryset.filter(site__id=site_id)
+        return queryset
+
 class ScheduleViewSet(viewsets.ModelViewSet):
     queryset = Schedule.objects.all()
     serializer_class = ScheduleSerializer
@@ -81,3 +90,10 @@ class ScheduleViewSet(viewsets.ModelViewSet):
 class TaskAssignmentViewSet(viewsets.ModelViewSet):
     queryset = TaskAssignment.objects.all()
     serializer_class = TaskAssignmentSerializer
+
+
+    @action(methods=['delete'], detail=False)
+    def delete_all(self, request):
+        count, _ = self.queryset.delete()  # Elimina todas las tareas y obtiene el conteo
+        return Response({'deleted': count}, status=status.HTTP_204_NO_CONTENT)
+

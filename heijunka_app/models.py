@@ -17,6 +17,13 @@ class UserManager(BaseUserManager):
 
         return self.create_user(email, password, **extra_fields)
 
+class Site(models.Model):
+    name = models.CharField(max_length=100)
+    location = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
 class User(AbstractBaseUser):
 
     ADMIN = 'admin'
@@ -34,6 +41,7 @@ class User(AbstractBaseUser):
     last_name = models.CharField(max_length=50, default='null')
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    site = models.ForeignKey(Site, on_delete=models.SET_NULL, null=True, blank=True)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default=EMPLOYEE)
 
     objects = UserManager()
@@ -44,12 +52,7 @@ class User(AbstractBaseUser):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
-class Site(models.Model):
-    name = models.CharField(max_length=100)
-    location = models.CharField(max_length=255)
 
-    def __str__(self):
-        return self.name
 
 class TypeClient(models.Model):
     MONOCLIENTE = 'mono'
@@ -83,11 +86,15 @@ class Schedule(models.Model):
         return f'{self.client.name} - {self.day_of_week} ({self.start_time} - {self.end_time})'
 
 
+
 class TaskAssignment(models.Model):
-    client = models.ForeignKey('Client', on_delete=models.CASCADE)
-    task = models.TextField()
-    start_hour = models.TimeField()
-    end_hour = models.TimeField()
+    hour = models.IntegerField()
+    collaborator = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'role': 'operator'})
+    description = models.TextField()
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+    site = models.ForeignKey(Site, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.client} - {self.task}"
+        return f"{self.description} - {self.client.name}"
+
