@@ -38,11 +38,30 @@ class UserSerializer(serializers.ModelSerializer):
             last_name=validated_data['last_name'],
             role=validated_data.get('role', User.EMPLOYEE),  # Rol por defecto es EMPLOYEE
             is_active=validated_data.get('is_active', True),
-            site=site  # Asignar el sitio al usuario
+            site=site
         )
         user.set_password(validated_data['password'])
         user.save()
         return user
+
+    def update(self, instance, validated_data):
+        # Evitar que la contraseña sea obligatoria en las actualizaciones
+        password = validated_data.pop('password', None)
+
+        # Actualizar otros campos
+        instance.email = validated_data.get('email', instance.email)
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.role = validated_data.get('role', instance.role)
+        instance.is_active = validated_data.get('is_active', instance.is_active)
+        instance.site = validated_data.get('site_id', instance.site)
+
+        # Si se proporciona una contraseña, actualizarla
+        if password:
+            instance.set_password(password)
+
+        instance.save()
+        return instance
 
 
 
@@ -81,6 +100,14 @@ class ClientSerializer(serializers.ModelSerializer):
         client = Client.objects.create(site=site, type=type_client, **validated_data)
         return client
 
+    def update(self, instance, validated_data):
+        # Actualizar solo los campos presentes en la solicitud
+        instance.name = validated_data.get('name', instance.name)
+        instance.site = validated_data.get('site_id', instance.site)
+        instance.type = validated_data.get('type_id', instance.type)
+
+        instance.save()
+        return instance
 
 
 class ScheduleSerializer(serializers.ModelSerializer):
