@@ -17,10 +17,8 @@ class RegisterView(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-
         # Validar los datos del serializador
         serializer.is_valid(raise_exception=True)
-
         # Crear el usuario utilizando el serializador
         self.perform_create(serializer)
 

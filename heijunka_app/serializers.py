@@ -23,10 +23,11 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'first_name', 'last_name', 'password', 'role', 'site_id', 'site_name')
+        fields = ('id', 'email', 'first_name', 'last_name', 'password', 'role', 'site_id','is_active', 'site_name')
         extra_kwargs = {
             'password': {'write_only': True},
             'role': {'required': False},  # Hacer que el role no sea obligatorio
+            'is_active': {'required': False},
         }
 
     def create(self, validated_data):
@@ -36,6 +37,7 @@ class UserSerializer(serializers.ModelSerializer):
             first_name=validated_data['first_name'],
             last_name=validated_data['last_name'],
             role=validated_data.get('role', User.EMPLOYEE),  # Rol por defecto es EMPLOYEE
+            is_active=validated_data.get('is_active', True),
             site=site  # Asignar el sitio al usuario
         )
         user.set_password(validated_data['password'])
@@ -72,7 +74,6 @@ class ClientSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'site_id', 'type_id', 'site_name', 'type_name')
 
     def create(self, validated_data):
-        # Extrae site y type directamente de validated_data
         site = validated_data.pop('site_id')  # Esto ahora es una instancia de Site
         type_client = validated_data.pop('type_id')  # Esto ahora es una instancia de TypeClient
 
