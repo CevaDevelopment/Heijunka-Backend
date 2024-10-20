@@ -82,7 +82,7 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Para desarrollo local
     "https://heijunka-frontend.onrender.com",  # URL pública del frontend en Render
-    "http://localhost:9000",
+    "http://localhost:3000",
 ]
 
 
