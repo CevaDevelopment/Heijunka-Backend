@@ -118,10 +118,10 @@ WSGI_APPLICATION = 'heijunka_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'heijunka_bd_92vk',
+        'NAME': 'heijunka_bd_92vk_vfpm',
         'USER': 'heijunka_bd_92vk_user',
-        'PASSWORD': 'dijm6RzZ5O7XPSM8dEftuJ8xVtzOZUc4',
-        'HOST': 'dpg-cs8jj768ii6s73cd2sp0-a.oregon-postgres.render.com',  # Cambia esto por el host de tu base de datos
+        'PASSWORD': 'T9vpzrTOorOYPWQmhpUwOlxy2z6qpiAv',
+        'HOST': 'dpg-ctdfsum8ii6s73947q7g-a.oregon-postgres.render.com',  # Cambia esto por el host de tu base de datos
         'PORT': '5432',
     }
 }
