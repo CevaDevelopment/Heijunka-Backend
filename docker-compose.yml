@@ -1,0 +1,40 @@
+version: '3.9'
+
+services:
+  backend:
+    build: .
+    container_name: heijunka-backend
+    ports:
+      - "8001:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    environment:
+      - DEBUG=True
+      - DB_ENGINE=django.db.backends.postgresql
+      - DB_NAME=heijunka_db
+      - DB_USER=heijunka_user
+      - DB_PASSWORD=heijunka_password
+      - DB_HOST=db
+      - DB_PORT=5432
+    command: >
+      sh -c "
+      python manage.py migrate &&
+      python manage.py runserver 0.0.0.0:8000
+      "
+
+  db:
+    image: postgres:15
+    container_name: heijunka-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: heijunka_db
+      POSTGRES_USER: heijunka_user
+      POSTGRES_PASSWORD: heijunka_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

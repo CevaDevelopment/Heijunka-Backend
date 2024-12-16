@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-dsxlmfn(l!&41lp8k_le@7cxyh*^9z#&rvy!vev#^m()0bir-4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     "172.17.0.1", "localhost", "127.0.0.1", 'heijunka-backend.onrender.com',
@@ -113,26 +113,32 @@ TEMPLATES = [
 WSGI_APPLICATION = 'heijunka_project.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+#Database
+#https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+import os
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'heijunka_bd_92vk',
-        'USER': 'heijunka_bd_92vk_user',
-        'PASSWORD': 'dijm6RzZ5O7XPSM8dEftuJ8xVtzOZUc4',
-        'HOST': 'dpg-cs8jj768ii6s73cd2sp0-a.oregon-postgres.render.com',  # Cambia esto por el host de tu base de datos
-        'PORT': '5432',
+        'ENGINE': os.getenv('DB_ENGINE', 'django.db.backends.postgresql'),
+        'NAME': os.getenv('DB_NAME', 'heijunka_db'),
+        'USER': os.getenv('DB_USER', 'heijunka_user'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'heijunka_password'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'heijunka_bd_92vk',
+#         'USER': 'heijunka_bd_92vk_user',
+#         'PASSWORD': 'dijm6RzZ5O7XPSM8dEftuJ8xVtzOZUc4',
+#         'HOST': 'dpg-cs8jj768ii6s73cd2sp0-a.oregon-postgres.render.com',  # Cambia esto por el host de tu base de datos
+#         'PORT': '5432',
+#     }
+# }
 
 
 
